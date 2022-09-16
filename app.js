@@ -1,47 +1,41 @@
-const express = require('express')
-,   routes = require('./routes')
-,   user = require('./routes/user')
-,   http = require('http')
-,   path = require('path');
+const express = require("express");
+const mysql = require("mysql");
+const path = require('path');
+const dotenv = require('dotenv');
 
-
-const session = require('express-session');
+dotenv.config({
+    path: './.env'
+})
 
 const app = express();
-const mysql = require('mysql');
-const bodyParser = require('body-parser')
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'test'
+
+const db = mysql.createConnection({
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE
+})
+
+const publicDirectory = path.join(__dirname, "./public");
+app.use(express.static(publicDirectory))
+
+app.use(express.urlencoded({extended: false}))
+app.use(express.json());
+console.log(__dirname);
+app.set('view engine', 'hbs');
+
+db.connect((error) => {
+    if(error) {
+        console.log(error);
+    } else {
+        console.log("MYSQL Connected...");
+    }
+})
+
+//Define routes
+app.use('/', require('./routes/pages'));
+app.use('/auth', require('./routes/auth'));
+
+app.listen(8080, () => {
+    console.log("Server started on Port 8080!");
 });
-
-connection.connect();
-global.db = connection;
-
-//ENV VARIABLES
-app.set('port', process.env.PORT || 8080);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({extended: false}))
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-    secret: 'telep',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {maxAge: 60000}
-}));
-
-//LOGIN ROUTES GET POST
-app.get('', routes.index);
-app.get('/signup', user.signup);
-app.post('/signup', user.signup);
-app.get('/login', routes.index);
-app.post('/login', user.login);
-app.get('/home/dashboard', user.dashboard);
-app.get('/home/logout', user.logout);
-app.get('/home/profile', user.profile);
-
-app.listen(8080);
