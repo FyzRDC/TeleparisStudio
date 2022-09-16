@@ -2,6 +2,7 @@ const express = require("express");
 const mysql = require("mysql");
 const path = require('path');
 const dotenv = require('dotenv');
+const cookie = require('cookie-parser');
 
 dotenv.config({
     path: './.env'
@@ -19,6 +20,7 @@ const db = mysql.createConnection({
 const publicDirectory = path.join(__dirname, "./public");
 app.use(express.static(publicDirectory))
 
+app.use(cookie())
 app.use(express.urlencoded({extended: false}))
 app.use(express.json());
 console.log(__dirname);
