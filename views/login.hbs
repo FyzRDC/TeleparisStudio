@@ -12,11 +12,25 @@
 </head>
 <body>
 <nav>
-    <h4>Studio Teleparis</h4>
+    {{#xif "id == 'none'"}}
+        <h4>Studio Teleparis</h4>
+    {{/xif}}
+    {{#xif "id !== 'none'"}}
+        <h4>Studio Teleparis - Production {{id.name}}</h4>
+    {{/xif}}
+    {{#xif "id.isAdmin == '1'"}}
+        <p>COMPTE ADMINISTRATEUR</p>
+    {{/xif}}
     <ul>
         <li><a href="/">Accueil</a></li>
-        <li><a href="/login">Connexion</a></li>
-        <li><a href="/register">Inscription</a></li>
+
+        {{#xif "id == 'none'"}}
+            <li><a href="/login">Connexion</a></li>
+        {{/xif}}
+        {{#xif "id !== 'none'"}}
+            <li><a href="/dashboard">Tableau de bord</a></li>
+            <li><a href="/auth/logout">Déconnexion</a></li>
+        {{/xif}}
     </ul>
 </nav>
 
@@ -35,7 +49,7 @@
                     <label for="password" class="form-label">Mot de passe</label>
                     <input type="password" class="form-control" id="passwordInput" name="password">
                 </div>
-                <button type="submit" class="btn btn-primary">Connexion</button>
+                <button type="submit" class="btn btn-danger">Connexion</button>
             </form>
         </div>
     </div>

@@ -3,6 +3,8 @@ const mysql = require("mysql");
 const path = require('path');
 const dotenv = require('dotenv');
 const cookie = require('cookie-parser');
+const exphbs = require('express-handlebars');
+
 
 dotenv.config({
     path: './.env'
@@ -24,6 +26,33 @@ app.use(cookie())
 app.use(express.urlencoded({extended: false}))
 app.use(express.json());
 console.log(__dirname);
+
+const hbs = exphbs.create({
+    extname: "hbs",
+    defaultLayout: "",
+    layoutsDir: "",
+    helpers: {
+        xif: function (expression, options) {
+            return hbs.helpers["x"].apply(this, [expression, options]) ? options.fn(this) : options.inverse(this);
+        },
+        x: function(expression, options) {
+            var result;
+            var context = this;
+            with(context) {
+                result = (function() {
+                    try {
+                        return eval(expression);
+                    } catch (e) {
+                        console.warn('•Expression: {{x \'' + expression + '\'}}\n•JS-Error: ', e, '\n•Context: ', context);
+                    }
+                }).call(context); // to make eval's lexical this=context
+            }
+            return result;
+        }
+    }
+});
+
+app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 
 db.connect((error) => {

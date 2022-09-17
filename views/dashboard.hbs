@@ -5,18 +5,46 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/style.css">
     <title>Document</title>
 </head>
 <body>
+
+<nav>
+    {{#xif "id == 'none'"}}
+        <h4>Studio Teleparis</h4>
+    {{/xif}}
+    {{#xif "id !== 'none'"}}
+        <h4>Studio Teleparis - Production {{id.name}}</h4>
+    {{/xif}}
+    {{#xif "id.isAdmin == '1'"}}
+        <p>COMPTE ADMINISTRATEUR</p>
+    {{/xif}}
+    <ul>
+        <li><a href="/">Accueil</a></li>
+
+        {{#xif "id == 'none'"}}
+            <li><a href="/login">Connexion</a></li>
+        {{/xif}}
+        {{#xif "id !== 'none'"}}
+            <li><a href="/dashboard">Tableau de bord</a></li>
+            <li><a href="/auth/logout">Déconnexion</a></li>
+        {{/xif}}
+    </ul>
+</nav>
+
 <div class="card">
     <img src="..." class="card-img-top" alt="...">
     <div class="card-body">
-        <h5 class="card-title">Dashboard</h5>
+        <h5 class="card-title">Dashboard {{id.email}}</h5>
         <p class="card-text">Bienvenue sur ce dashboard ! Cette page est accessible seulement car vous êtes connecté.</p>
-        <a href="/logout" class="btn btn-primary">Déconnexion</a>
+        <a href="/logout" class="btn btn-danger">Déconnexion</a>
+        {{#xif "id.isAdmin == 1"}}
+            <a href="/register" class="btn btn-danger">Enregistrer un compte</a>
+        {{/xif}}
     </div>
 </div>
 </body>

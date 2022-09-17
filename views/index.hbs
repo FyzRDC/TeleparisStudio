@@ -11,22 +11,44 @@
     <title>Document</title>
 </head>
 <body>
+
     <nav>
-        <h4>Studio Teleparis</h4>
+        {{#xif "id == 'none'"}}
+            <h4>Studio Teleparis</h4>
+        {{/xif}}
+        {{#xif "id !== 'none'"}}
+            <h4>Studio Teleparis - Production {{id.name}}</h4>
+        {{/xif}}
+        {{#xif "id.isAdmin == '1'"}}
+            <p>COMPTE ADMINISTRATEUR</p>
+        {{/xif}}
+        <ul>
         <ul>
             <li><a href="/">Accueil</a></li>
 
-            <li><a href="/login">Connexion</a></li>
-            <li><a href="/register">Inscription</a></li>
+            {{#xif "id == 'none'"}}
+                <li><a href="/login">Connexion</a></li>
+            {{/xif}}
+            {{#xif "id !== 'none'"}}
+                <li><a href="/dashboard">Tableau de bord</a></li>
+                <li><a href="/auth/logout">Déconnexion</a></li>
+            {{/xif}}
         </ul>
     </nav>
 
     <div class="bg-light p-5 rounded-lg m-3">
-        <h1 class="display-4">Hello, world!</h1>
-        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+        <h1 class="display-4">Bienvenue !</h1>
+        <p class="lead">Cette plateforme permet de gérer facilement et rapidement les médias que vous souhaitez intégrer à vos magnifique réalisations chez Téléparis.</p>
         <hr class="my-4">
-        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+        <p>Pour commencer, connectez vous avec le compte qui vous a été fourni par mail.</p>
+        {{#xif "id == 'none'"}}
+            <a class="btn btn-danger btn-lg" target="_blank" href="/login" role="button">Connexion</a>
+        {{/xif}}
+        {{#xif "id !== 'none'"}}
+            <a class="btn btn-danger btn-lg" target="_blank" href="/dashboard" role="button">Tableau de bord</a>
+        {{/xif}}
+
+        <a class="btn btn-danger btn-lg" target="_blank" href="https://teleparis.fr" role="button">Téléparis</a>
     </div>
 </body>
 </html>
