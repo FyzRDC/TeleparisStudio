@@ -1,5 +1,6 @@
 const express = require('express');
 const checkAuth = require("../middlewares/checkAuth");
+const manageUsers = require("../middlewares/manageUsers");
 
 const router = express.Router();
 
@@ -17,6 +18,11 @@ router.get('/register', checkAuth.onlyAdmin,(req, res) => {
 
 router.get('/dashboard', checkAuth.blockToLogged, (req, res) => {
     res.render('dashboard');
+})
+
+router.get('/users', checkAuth.onlyAdmin, (req, res) => {
+    const all = manageUsers.getAllUsers;
+    res.render('users', { users: ["Test", "test2"] });
 })
 
 module.exports = router;

@@ -5,13 +5,14 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" type="image/x-icon" href="/teleparis.ico">
+    <link rel="icon" type="image/x-icon" href="/public/teleparis.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/style.css">
     <title>Studio Teleparis</title>
 </head>
 <body>
+
 <nav>
     {{#xif "id == 'none'"}}
         <h4>Studio Teleparis</h4>
@@ -35,30 +36,15 @@
     </ul>
 </nav>
 
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header">
-            Connexion
-        </div>
-        <div class="card-body">
-            <form action="/auth/login" method="POST">
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="emailInput" aria-describedby="email" name="email">
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Mot de passe</label>
-                    <input type="password" class="form-control" id="passwordInput" name="password">
-                </div>
-                <button type="submit" class="btn btn-danger">Connexion</button>
-            </form>
-        </div>
+{{#each users}}
+<div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
     </div>
 </div>
-
-{{#if message }}
-    <h4 class="alert alert-danger">{{message}}</h4>
-{{/if}}
-
+{{/each}}
 </body>
 </html>
