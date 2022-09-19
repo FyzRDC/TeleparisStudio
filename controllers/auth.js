@@ -25,11 +25,13 @@ exports.register = (req, res) => {
         }
 
         if (results.length > 0) {
-            return res.render('register', {
-                message: 'L\'adresse mail est déjà utilisée !'
+             router.get('/register',checkAuth.loggedData, (req, res) => {
+             return   res.render('register', {
+                    message: 'L\'adresse mail est déjà utilisée !'
+                })
             })
         } else if (password !== passwordConfirm) {
-            return res.render('register', {
+            return res.render('register', checkAuth.onlyAdmin, {
                 message: 'Les mot de passes ne correspondent pas'
             });
         }

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const manageUsers = require('../middlewares/manageUsers');
 
 const loggedData = (req, res, next) => {
     const token = req.cookies.access_token;
@@ -18,6 +19,28 @@ const loggedData = (req, res, next) => {
             });
             next();
         })
+}
+
+const users = (req, res, next) => {
+    const token = req.cookies.access_token;
+    if(!token) {
+        return res.redirect('/')
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if(err) {
+            return res.redirect('/')
+        }
+        if(user.isAdmin !== 1) {
+            return res.redirect('/')
+        }
+        const users_list = manageUsers.getAllUsers();
+        return res.render(req.route.path.substring(1), req.user = {
+            id: user,
+            users: users_list
+        });
+        next();
+    })
 }
 
 const onlyAdmin = (req, res, next) => {
@@ -57,6 +80,7 @@ const onlyAdmin = (req, res, next) => {
     })
 }
 
+exports.users = users;
 exports.onlyAdmin = onlyAdmin;
 exports.blockToLogged = blockToLogged;
 exports.loggedData = loggedData;

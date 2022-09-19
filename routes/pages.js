@@ -20,9 +20,8 @@ router.get('/dashboard', checkAuth.blockToLogged, (req, res) => {
     res.render('dashboard');
 })
 
-router.get('/users', checkAuth.onlyAdmin, (req, res) => {
-    const all = manageUsers.getAllUsers;
-    res.render('users', { users: ["Test", "test2"] });
+router.get('/users', checkAuth.users, (req, res) => {
+    res.render('users');
 })
 
 module.exports = router;
