@@ -21,6 +21,33 @@ const loggedData = (req, res, next) => {
         })
 }
 
+const dashboard = (req, res, next) => {
+    const token = req.cookies.access_token;
+    if(!token) {
+        return res.redirect('/')
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if(err) {
+            return res.redirect('/')
+        }
+
+        /*
+        TODO :
+        Make a loop with every images to display with the API,
+        maybe check if image is default
+        or customised and add buttons to delete and modify
+         */
+
+        const elements = manageUsers.getAllElements(req);
+        return res.render(req.route.path.substring(1), req.user = {
+            id: user,
+            elements: elements
+        });
+        next();
+    })
+}
+
 const users = (req, res, next) => {
     const token = req.cookies.access_token;
     if(!token) {
@@ -63,6 +90,22 @@ const onlyAdmin = (req, res, next) => {
     })
 }
 
+const getUser = (req) => {
+    const token = req.cookies.access_token;
+    if(!token) {
+        return "none";
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if(err) {
+            console.log(err);
+            return "none";
+        }
+        return user;
+    })
+    return "none";
+}
+
  const blockToLogged = (req, res, next) => {
     const token = req.cookies.access_token;
     if(!token) {
@@ -80,6 +123,8 @@ const onlyAdmin = (req, res, next) => {
     })
 }
 
+exports.dashboard = dashboard;
+exports.getUser = getUser;
 exports.users = users;
 exports.onlyAdmin = onlyAdmin;
 exports.blockToLogged = blockToLogged;

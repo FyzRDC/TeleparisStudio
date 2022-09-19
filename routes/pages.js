@@ -16,7 +16,7 @@ router.get('/register', checkAuth.onlyAdmin,(req, res) => {
     res.render('register');
 })
 
-router.get('/dashboard', checkAuth.blockToLogged, (req, res) => {
+router.get('/dashboard', checkAuth.dashboard, (req, res) => {
     res.render('dashboard');
 })
 

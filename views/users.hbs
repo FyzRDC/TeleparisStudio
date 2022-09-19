@@ -41,8 +41,8 @@
 
 <div class="user_list">
 {{#each users}}
-<div class="card" style="width: 13rem;">
-    <img style="width: 40%" src="https://img.freepik.com/premium-vector/icon-slapstick-cinema-item-slapstick-film-sign-equipment-entertainment-movie-video-vector-flat-design-illustration_485380-417.jpg?w=2000" class="card-img-top" alt="...">
+<div class="card" style="padding-top: 20px; margin-top: 50px; width: 13rem;">
+    <img style="width: 40%" src="/icons/icon_prod.png" class="card-img-top" alt="...">
     <div class="card-body">
         <h5 class="card-title">{{this.name}}</h5>
         <p class="card-text">{{this.mail}}</p>
@@ -51,6 +51,13 @@
     </div>
 </div>
 {{/each}}
+    <div class="card" style="padding-top: 20px; margin-top: 50px; width: 13rem;">
+        <img style="width: 40%" src="/icons/icon_new_prod.png" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">Création</h5>
+            <p class="card-text">Ajout d'une production</p>
+            <a href="/register" class="btn btn-danger">Ajouter</a>
+        </div>
 </div>
 </body>
 </html>

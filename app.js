@@ -68,6 +68,12 @@ app.use('/', require('./routes/pages'));
 app.use('/auth', require('./routes/auth'));
 app.use('/action', require('./routes/actions'));
 
+app.use(function(req, res, next) {
+    if(req.statusCode === 404 && req.path.includes("action/get")) {
+        res.sendFile(path.resolve("upload/default.png"));
+    }
+});
+
 app.listen(8080, () => {
     console.log("Server started on Port 8080!");
 });

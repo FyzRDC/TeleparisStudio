@@ -11,6 +11,10 @@ nav {
     justify-content: space-between;
 }
 
+a:after {
+
+}
+
 nav ul {
     display: flex;
     justify-content: space-around;
@@ -22,12 +26,16 @@ nav li{
 }
 
 nav li a {
+    letter-spacing: 0.5px;
     transition: 0.2s;
     color: #fff;
     text-decoration: none;
     font-weight: bold;
     padding: 5px 8px;
+    margin-left: 20px;
+    font-size: 20px;
 }
+
 
 .user_list {
     display: flex;
@@ -40,10 +48,9 @@ nav li a {
 }
 
 nav li a:hover {
-    padding: 5px;
     transition: 0.2s;
-    text-decoration: none;
     color:white;
-    border-radius: 10px;
-    border: 2px solid white;
+    text-decoration: none;
+    background-color: #73131e;
+    border-radius: 20px;
 }

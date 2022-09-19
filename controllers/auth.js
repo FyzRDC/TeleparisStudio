@@ -16,7 +16,8 @@ exports.register = (req, res) => {
     const {name, email, password, passwordConfirm} = req.body;
 
     if(!name || !email || !password || !passwordConfirm)             return res.render('register', {
-        message: 'Tout les champs doivent être complétés'
+        message: 'Tout les champs doivent être complétés',
+        id: checkAuth.getUser(req)
     })
 
     db.query('SELECT mail FROM users WHERE mail = ?', [email], async (error, results) => {
@@ -25,14 +26,14 @@ exports.register = (req, res) => {
         }
 
         if (results.length > 0) {
-             router.get('/register',checkAuth.loggedData, (req, res) => {
-             return   res.render('register', {
-                    message: 'L\'adresse mail est déjà utilisée !'
-                })
+            return  res.render('register', {
+                message: 'L\'adresse mail est déjà utilisée !',
+                id: checkAuth.getUser(req)
             })
         } else if (password !== passwordConfirm) {
-            return res.render('register', checkAuth.onlyAdmin, {
-                message: 'Les mot de passes ne correspondent pas'
+            return res.render('register', {
+                message: 'Les mot de passes ne correspondent pas',
+                id: checkAuth.getUser(req)
             });
         }
         let hashPwd = await bcrypt.hash(password, 8);
@@ -42,7 +43,8 @@ exports.register = (req, res) => {
                 console.log(error);
             } else {
                 return res.render('register', {
-                    message: 'Utilisateur inscrit !'
+                    message: 'Utilisateur inscrit !',
+                    id: checkAuth.getUser(req)
                 });
             }
         })
@@ -59,7 +61,8 @@ exports.login = (req, res) => {
     const {email, password} = req.body;
 
     if(!email || !password)return res.render('login', {
-        message: 'Tout les champs doivent être complétés'
+        message: 'Tout les champs doivent être complétés',
+        id: checkAuth.getUser(req)
     })
 
     db.query('SELECT * FROM users WHERE mail = ?', [email], async (error, results) => {
@@ -75,12 +78,13 @@ exports.login = (req, res) => {
 
             const token = await jwt.sign({ id,name,email, isAdmin }, process.env.JWT_SECRET, { expiresIn: 3600000})
             res.cookie('access_token', token, {
-                httpOnly: true
+                httpOnly: false
             });
             return res.redirect("../dashboard");
         } else {
             return res.render('login', {
-                message: 'Le compte est introuvable ou le mot de passe est incorrect.'
+                message: 'Le compte est introuvable ou le mot de passe est incorrect.',
+                id: checkAuth.getUser(req)
             })
         }
 
