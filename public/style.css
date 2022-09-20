@@ -25,6 +25,13 @@ nav li{
     list-style: none;
 }
 
+#dashboard_img {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
 nav li a {
     letter-spacing: 0.5px;
     transition: 0.2s;

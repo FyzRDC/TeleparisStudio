@@ -2,6 +2,7 @@ const mysql = require("mysql");
 const path = require("path");
 const fs = require('fs');
 const checkAuth = require("../middlewares/checkAuth");
+const manageUsers = require("../middlewares/manageUsers");
 const jwt = require("jsonwebtoken");
 const db = mysql.createConnection({
     host: process.env.DATABASE_HOST,
@@ -27,11 +28,31 @@ exports.get = (req, res) => {
             });
         } else {
             let number = req.query.nb;
-            if(fs.existsSync(path.resolve("upload/" + user.id + "/" + number + ".png"))) {
+            let id;
+            if(req.query.id) {
+                id = req.query.id;
+            } else {
+                if(manageUsers.getActiveUser()) {
+                    id = manageUsers.getActiveUser().id;
+                } else {
+                    res.sendFile(path.resolve("upload/default.png"), {
+                        id: checkAuth.getUser(req)
+                    });
+                    return;
+                }
 
-                res.sendFile(path.resolve("upload/" + user.id + "/" + number + ".png"), {
-                    id: checkAuth.getUser(req)
-                });
+            }
+            if(id == user.id || user.isAdmin) {
+                if (fs.existsSync(path.resolve("upload/" + id + "/" + number + ".png"))) {
+
+                    res.sendFile(path.resolve("upload/" + id + "/" + number + ".png"), {
+                        id: checkAuth.getUser(req)
+                    });
+                } else {
+                    res.sendFile(path.resolve("upload/default.png"), {
+                        id: checkAuth.getUser(req)
+                    });
+                }
             } else {
                 res.sendFile(path.resolve("upload/default.png"), {
                     id: checkAuth.getUser(req)

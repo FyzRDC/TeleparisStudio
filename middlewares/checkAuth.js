@@ -38,12 +38,9 @@ const dashboard = (req, res, next) => {
         maybe check if image is default
         or customised and add buttons to delete and modify
          */
-
-        const elements = manageUsers.getAllElements(req);
         return res.render(req.route.path.substring(1), req.user = {
             id: user,
-            elements: elements
-        });
+         });
         next();
     })
 }

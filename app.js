@@ -32,6 +32,12 @@ const hbs = exphbs.create({
     defaultLayout: "",
     layoutsDir: "",
     helpers: {
+        times: function(n, block) {
+            var accum = '';
+            for(var i = 1; i < n+1; ++i)
+                accum += block.fn(i);
+            return accum;
+        },
         xif: function (expression, options) {
             return hbs.helpers["x"].apply(this, [expression, options]) ? options.fn(this) : options.inverse(this);
         },
