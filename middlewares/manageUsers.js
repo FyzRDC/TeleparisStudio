@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const XMLHttpRequest = require('xhr2');
 const {logout} = require("../controllers/auth");
 const db = mysql.createConnection({
@@ -8,29 +8,22 @@ const db = mysql.createConnection({
     database: process.env.DATABASE
 })
 
-const getActiveUser = () => {
-    db.query('SELECT actualProduction FROM data LIMIT 1', (error, results) => {
+
+let getActiveUser = async () => {
+    let result;
+    db.promise().query('SELECT actualProduction FROM data LIMIT 1').then((results, error) => {
         if (error) {
-            console.log(error);
             return null;
         }
-        if(results.length != 1) {
+        if(results.length == 0) {
+            console.log(results)
+            console.log("Uh oh")
             return null;
         }
-        db.query('SELECT * FROM users WHERE id = ?', [results[0]], (error, results) => {
-            if(error) {
-                return null;
-            }
-            if(results.length == 1) {
-
-                let id = results[0].id;
-                let name = results[0].name;
-                let email = results[0].email;
-
-                return {id:id, name:name, email:email};
-            }
-            return null;
-        })
+        console.log("Error ? : "+error);
+        console.log(results[0]);
+        result = results[0];
+        return result;
     });
 }
 

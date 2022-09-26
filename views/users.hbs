@@ -39,15 +39,15 @@
     Si aucun compte n'est affiché, un rafraichissement de la page est peut être nécessaire.
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-<div class="alert alert-info" role="alert">
-    La production actuelle est
-</div>
 {{#if message }}
     <h4 class="alert alert-danger">{{message}}</h4>
 {{/if}}
 <div class="user_list">
 {{#each users}}
 <div class="card" style="padding-top: 20px; margin-top: 50px; width: 13rem;">
+    <div class="alert alert-success" role="alert">
+        Production active : {{actualUser}}
+    </div>
     <img style="width: 40%" src="/icons/icon_prod.png" class="card-img-top" alt="...">
     <div class="card-body">
         <h5 class="card-title">{{this.name}}</h5>

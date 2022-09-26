@@ -51,17 +51,20 @@ const users = (req, res, next) => {
         return res.redirect('/')
     }
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if(err) {
+    jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
+        if (err) {
             return res.redirect('/')
         }
-        if(user.isAdmin !== 1) {
+        if (user.isAdmin !== 1) {
             return res.redirect('/')
         }
-        const users_list = manageUsers.getAllUsers();
+        let activeUser = await manageUsers.getActiveUser();
+        let users_list = await manageUsers.getAllUsers();
+        console.log(activeUser + " !!!")
         return res.render(req.route.path.substring(1), req.user = {
             id: user,
-            users: users_list
+            users: users_list,
+            actualUser: activeUser
         });
         next();
     })
